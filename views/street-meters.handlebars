@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Meters</title>
+</head>
+<body>
+
+     <div>
+        <h2>All Meters!</h2>
+    </div>
+
+    <div id="all-meters">
+            <ul id="all">
+                {{#each meters}}
+                <li>{{this.street_number}} {{this.street_id}} {{this.balance}}</li>
+                {{/each}}
+            </ul>
+    </div>
+
+    
+    
+</body>
+</html>

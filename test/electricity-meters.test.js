@@ -43,11 +43,11 @@ describe("The Electricity meter", function() {
 		const electricityMeters = ElectricityMeters(pool);
 		const appliances = await electricityMeters.appliances();
 		
-		assert.deepStrictEqual([{name:"Stove"},
-		{name:"TV"}, 
-		{name:"Heater"},
-		{name:"Fridge"}, 
-		{name:"Kettle"}], appliances);
+		assert.deepStrictEqual([{"id":1, "name":"Stove", rate:"4.50"},
+		{"id":2, "name":"TV", "rate":"1.80"}, 
+		{"id":3, "name":"Heater", "rate":"3.50"},
+		{"id":4, "name":"Fridge", "rate":"4.00"}, 
+		{"id":5, "name":"Kettle", "rate":"2.70"}], appliances);
 
 	});
 
@@ -56,11 +56,11 @@ describe("The Electricity meter", function() {
 		const electricityMeters = ElectricityMeters(pool);
 		const appliances = await electricityMeters.appliances();
 		
-		assert.deepStrictEqual([{name:"Stove"},
-		 {name:"TV"}, 
-		 {name:"Heater"},
-		 {name:"Fridge"}, 
-		 {name:"Kettle"}], appliances);
+		assert.deepStrictEqual([{"id":1, "name":"Stove", rate:"4.50"},
+		{"id":2, "name":"TV", "rate":"1.80"}, 
+		{"id":3, "name":"Heater", "rate":"3.50"},
+		{"id":4, "name":"Fridge", "rate":"4.00"}, 
+		{"id":5, "name":"Kettle", "rate":"2.70"}], appliances);
 	
 	});
 

@@ -40,17 +40,28 @@ app.get('/streets', async function(req, res) {
 	});
 });
 
+app.get('/appliances', async function(req, res) {
+	const app = await electricityMeters.appliances();
+	console.log(app);
+	res.render('streets', {
+		app
+	});
+});
+
 app.get('/meter/:street_id', async function(req, res) {
 
 	// use the streetMeters method in the factory function...
 	// send the street id in as sent in by the URL parameter street_id - req.params.street_id
+
+	const streetID = req.params.street_id
+	const meters = await electricityMeters.streetMeters(streetID);
 
 	// create  template called street_meters.handlebars
 	// in there loop over all the meters and show them on the screen.
 	// show the street number and name and the meter balance
 
 	res.render('street_meters', {
-		meters
+		meter: meters.rows[0].id
 	});
 });
 

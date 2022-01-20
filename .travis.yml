@@ -1,0 +1,14 @@
+language: node_js
+
+env:
+  - DATABASE_URL=postgresql://codex:pg123@localhost:5432/topups_db
+node_js:  
+  - 12
+
+before_script:
+  - psql -c 'create database  topups_db;' -U postgres
+  - psql -U postgres -d "avo-shopper" -a -f ./sql/db.sql
+
+
+services:
+  - postgresql

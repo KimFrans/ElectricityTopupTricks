@@ -17,8 +17,8 @@ module.exports = function (pool) {
 
 	// return all the appliances
 	async function appliances() {
-		const appliance = await pool.query('SELECT name FROM appliance');
-		return appliance.rows;
+		const applian = await pool.query('SELECT * FROM appliance');
+		return applian.rows;
 	}
 
 	// increase the meter balance for the meterId supplied
