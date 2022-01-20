@@ -64,10 +64,11 @@ describe("The Electricity meter", function() {
 	
 	});
 
+
 	// it("should be able to topup electricity", async function() {
 
 	// 	const electricityMeters = ElectricityMeters(pool);
-	// 	const appliances = await electricityMeters.topupElectricity(3, 20);
+	// 	const topup = await electricityMeters.topupElectricity(3, 20);
 	// 	const meterData = await electricityMeters.meterData(3);
 	// 	assert.equal(70, meterData.balance);
 
@@ -76,11 +77,12 @@ describe("The Electricity meter", function() {
 	// it("should be able to use electricity", async function() {
 
 	// 	const electricityMeters = ElectricityMeters(pool);
-	// 	const appliances = await electricityMeters.useElectricity(2, 20);
+	// 	const use = await electricityMeters.useElectricity(2, 20);
 	// 	const meterData = await electricityMeters.meterData(2);
 	// 	assert.equal(30, meterData.balance);
 
 	// });
+
 
 	this.afterAll(function() {
 		pool.end();

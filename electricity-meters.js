@@ -25,8 +25,9 @@ module.exports = function (pool) {
 	//(use upate with where)
 	async function topupElectricity(meterId, units) {
 		// const topUpMeter = await pool.query('SELECT id FROM electricity_meter WHERE id = $1', [meterId]);
-		const topUpUnits = await pool.query('UPDATE electricity_meter SET balance = $1 WHERE id = $2', [units, meterId]);
-		// return topUpUnits;
+		const topUpUnits = await pool.query('UPDATE electricity_meter SET newBalnace = SUM(balance,$1) WHERE id = $2', [units, meterId]);
+		return topUpUnits;
+
 
 	}
 
@@ -40,6 +41,7 @@ module.exports = function (pool) {
 	// decrease the meter balance for the meterId supplied
 	async function useElectricity(meterId, units) {
 		const useUnits = await pool.query('UPDATE electricity_meter SET balance = $1 WHERE id = $2', [units, meterId]);
+		// const useUnits = await pool.query('SELECT id FROM electricity_meter WHERE id=$1 SET balance SUM(balance,$2)', [meterId, units]);
 		return useUnits;
 	}
 
@@ -47,16 +49,16 @@ module.exports = function (pool) {
 	//Return the meter_id, balance, street_number and the street_name for the given meter. 
 	//(order by, join, limit 1)
 	async function lowestBalanceMeter() {
-		const lowest = await pool.query('SELECT street_name FROM street JOIN electricity_meter ON electricity_meter.street_id = street.id ORDER BY asd LIMIT 1');
+		const lowest = await pool.query('SELECT name FROM street JOIN electricity_meter ON electricity_meter.street_id = street.id ORDER BY id ASC LIMIT 1');
 		return lowest;
-
+		
 	}
 
 	//Return the street name & totalBalance for the street 
 	//with the highest total balance 
 	//(group by + sum + order by, limit 1)
 	async function highestBalanceStreet() {
-		const highest = await pool.query('SELECT sum(balance) as total FROM electricity_meter JOIN street on street.id = electricity_meter.street_id group by name ORDER BY asd LIMIT 1');
+		const highest = await pool.query('SELECT sum(balance) as total FROM electricity_meter JOIN street on street.id = electricity_meter.street_id group by name ORDER BY DESC LIMIT 1');
 		return highest;
 	}
 
