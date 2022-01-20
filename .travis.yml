@@ -1,7 +1,7 @@
 language: node_js
 
 env:
-  - DATABASE_URL=postgresql://codex:pg123@localhost:5432/topups_db
+  - DATABASE_URL=postgresql://codex:pg123@localhost:5432/topups_db;
 node_js:  
   - 12
 
