@@ -1,35 +1,63 @@
 // this is our
-module.exports = function(pool) {
+module.exports = function (pool) {
 
 	// list all the streets the we have on records
 	async function streets() {
-		const streets = await pool.query(`select * from street`);
+		const streets = await pool.query('SELECT * FROM street');
 		return streets.rows;
 	}
 
 	// for a given street show all the meters and their balances
-	function streetMeters(streetId) {
+	async function streetMeters(streetId) {
+		const meterID = await pool.query('SELECT * FROM street WHERE id = $1', [streetId]);
+		const meter = await pool.query('SELECT street_number, balance FROM electricity_meter WHERE street_id = $1', [meterID]);
+		return meter;
 
 	}
 
 	// return all the appliances
-	function appliances() {
-
+	async function appliances() {
+		const appliance = await pool.query('SELECT name FROM appliance');
+		return appliance.rows;
 	}
 
 	// increase the meter balance for the meterId supplied
-	function topupElectricity(meterId, units) {
+	//(use upate with where)
+	async function topupElectricity(meterId, units) {
+		// const topUpMeter = await pool.query('SELECT id FROM electricity_meter WHERE id = $1', [meterId]);
+		const topUpUnits = await pool.query('UPDATE electricity_meter SET balance = $1 WHERE id = $2', [units, meterId]);
+		// return topUpUnits;
 
 	}
-	
+
 	// return the data for a given balance
-	function meterData(meterId) {
-	
+	async function meterData(meterId) {
+		const dataMeter = await pool.query('SELECT * FROM electricity_meter WHERE id = $1',[meterId]);
+		return dataMeter;
+
 	}
 
 	// decrease the meter balance for the meterId supplied
-	function useElectricity(meterId, units) {
-	
+	async function useElectricity(meterId, units) {
+		const useUnits = await pool.query('UPDATE electricity_meter SET balance = $1 WHERE id = $2', [units, meterId]);
+		return useUnits;
+	}
+
+	//return the meter with the lowest balance. 
+	//Return the meter_id, balance, street_number and the street_name for the given meter. 
+	//(order by, join, limit 1)
+	async function lowestBalanceMeter() {
+		const lowest = await pool.query('SELECT street_name FROM street JOIN electricity_meter ON electricity_meter.street_id = street.id ORDER BY asd LIMIT 1');
+		return lowest;
+
+	}
+
+	//Return the street name & totalBalance for the street 
+	//with the highest total balance 
+	//(group by + sum + order by, limit 1)
+	async function highestBalanceStreet() {
+		const highest = await pool.query('SELECT sum(balance) as total FROM electricity_meter JOIN street on street.id = electricity_meter.street_id group by name ORDER BY asd LIMIT 1');
+		return highest;
 	}
 
 	return {
@@ -38,7 +66,9 @@ module.exports = function(pool) {
 		appliances,
 		topupElectricity,
 		meterData,
-		useElectricity
+		useElectricity,
+		lowestBalanceMeter,
+		highestBalanceStreet
 	}
 
 
