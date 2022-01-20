@@ -65,23 +65,23 @@ describe("The Electricity meter", function() {
 	});
 
 
-	// it("should be able to topup electricity", async function() {
+	it("should be able to topup electricity", async function() {
 
-	// 	const electricityMeters = ElectricityMeters(pool);
-	// 	const topup = await electricityMeters.topupElectricity(3, 20);
-	// 	const meterData = await electricityMeters.meterData(3);
-	// 	assert.equal(70, meterData.balance);
+		const electricityMeters = ElectricityMeters(pool);
+		// const topup = await electricityMeters.topupElectricity(3, 20);
+		// const meterData = await electricityMeters.meterData(3);
+		assert.equal(70, await electricityMeters.topupElectricity(3, 20));
 
-	// });
+	});
 
-	// it("should be able to use electricity", async function() {
+	it("should be able to use electricity", async function() {
 
-	// 	const electricityMeters = ElectricityMeters(pool);
-	// 	const use = await electricityMeters.useElectricity(2, 20);
-	// 	const meterData = await electricityMeters.meterData(2);
-	// 	assert.equal(30, meterData.balance);
+		const electricityMeters = ElectricityMeters(pool);
+		// const use = await electricityMeters.useElectricity(2, 20);
+		// const meterData = await electricityMeters.meterData(2);
+		assert.equal(30, await electricityMeters.useElectricity(2, 20));
 
-	// });
+	});
 
 
 	this.afterAll(function() {

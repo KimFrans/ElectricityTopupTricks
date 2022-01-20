@@ -24,9 +24,10 @@ module.exports = function (pool) {
 	// increase the meter balance for the meterId supplied
 	//(use upate with where)
 	async function topupElectricity(meterId, units) {
-		// const topUpMeter = await pool.query('SELECT id FROM electricity_meter WHERE id = $1', [meterId]);
-		const topUpUnits = await pool.query('UPDATE electricity_meter SET newBalnace = SUM(balance,$1) WHERE id = $2', [units, meterId]);
-		return topUpUnits;
+		// const topUpMeter = await pool.query('SELECT id FROM electricity_meter WHERE id = $1 SUM(balance,$2) as total SET balance = total', [meterId], units);
+		const topUpUnits = await pool.query('UPDATE electricity_meter SUM(balance,$1) WHERE id = $2', [units, meterId]);
+		// return topUpUnits;
+		return topUpMeter;
 
 
 	}
@@ -60,6 +61,7 @@ module.exports = function (pool) {
 	async function highestBalanceStreet() {
 		const highest = await pool.query('SELECT sum(balance) as total FROM electricity_meter JOIN street on street.id = electricity_meter.street_id group by name ORDER BY DESC LIMIT 1');
 		return highest;
+
 	}
 
 	return {
