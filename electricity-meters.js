@@ -25,25 +25,23 @@ module.exports = function (pool) {
 	//(use upate with where)
 	async function topupElectricity(meterId, units) {
 		// const topUpMeter = await pool.query('SELECT id FROM electricity_meter WHERE id = $1 SUM(balance,$2) as total SET balance = total', [meterId], units);
-		const topUpUnits = await pool.query('UPDATE electricity_meter SUM(balance,$1) WHERE id = $2', [units, meterId]);
-		// return topUpUnits;
-		return topUpMeter;
-
+		const topUpUnits = await pool.query('UPDATE electricity_meter SET balance = balance + $1 WHERE id = $2', [units, meterId]);
+		return topUpUnits.rows;
 
 	}
 
 	// return the data for a given balance
 	async function meterData(meterId) {
 		const dataMeter = await pool.query('SELECT * FROM electricity_meter WHERE id = $1',[meterId]);
-		return dataMeter;
+		return dataMeter.rows;
 
 	}
 
 	// decrease the meter balance for the meterId supplied
 	async function useElectricity(meterId, units) {
-		const useUnits = await pool.query('UPDATE electricity_meter SET balance = $1 WHERE id = $2', [units, meterId]);
+		const useUnits = await pool.query('UPDATE electricity_meter SET balance = balance - $1 WHERE id = $2', [units, meterId]);
 		// const useUnits = await pool.query('SELECT id FROM electricity_meter WHERE id=$1 SET balance SUM(balance,$2)', [meterId, units]);
-		return useUnits;
+		return useUnits.rows;
 	}
 
 	//return the meter with the lowest balance. 
@@ -64,6 +62,11 @@ module.exports = function (pool) {
 
 	}
 
+	async function updatedValue(meterId){
+		const value = await pool.query('SELECT balance FROM electricity_meter WHERE id = $1', [meterId])
+		return value.rows
+	}
+
 	return {
 		streets,
 		streetMeters,
@@ -72,7 +75,8 @@ module.exports = function (pool) {
 		meterData,
 		useElectricity,
 		lowestBalanceMeter,
-		highestBalanceStreet
+		highestBalanceStreet,
+		updatedValue
 	}
 
 

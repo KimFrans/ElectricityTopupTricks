@@ -68,18 +68,19 @@ describe("The Electricity meter", function() {
 	it("should be able to topup electricity", async function() {
 
 		const electricityMeters = ElectricityMeters(pool);
-		// const topup = await electricityMeters.topupElectricity(3, 20);
-		// const meterData = await electricityMeters.meterData(3);
-		assert.equal(70, await electricityMeters.topupElectricity(3, 20));
+		
+		await electricityMeters.topupElectricity(3, 20)
+		
+		assert.deepStrictEqual([{"balance":"70.00"}], await electricityMeters.updatedValue(3));
 
 	});
 
 	it("should be able to use electricity", async function() {
 
 		const electricityMeters = ElectricityMeters(pool);
-		// const use = await electricityMeters.useElectricity(2, 20);
-		// const meterData = await electricityMeters.meterData(2);
-		assert.equal(30, await electricityMeters.useElectricity(2, 20));
+		await electricityMeters.useElectricity(2, 20);
+		
+		assert.deepStrictEqual([{"balance":"30.00"}], await electricityMeters.updatedValue(2));
 
 	});
 
