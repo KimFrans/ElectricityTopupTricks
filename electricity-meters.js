@@ -49,7 +49,7 @@ module.exports = function (pool) {
 	//(order by, join, limit 1)
 	async function lowestBalanceMeter() {
 		const lowest = await pool.query('SELECT name FROM street JOIN electricity_meter ON electricity_meter.street_id = street.id ORDER BY id ASC LIMIT 1');
-		return lowest;
+		return lowest.rows;
 		
 	}
 
@@ -58,7 +58,7 @@ module.exports = function (pool) {
 	//(group by + sum + order by, limit 1)
 	async function highestBalanceStreet() {
 		const highest = await pool.query('SELECT sum(balance) as total FROM electricity_meter JOIN street on street.id = electricity_meter.street_id group by name ORDER BY DESC LIMIT 1');
-		return highest;
+		return highest.rows;
 
 	}
 
